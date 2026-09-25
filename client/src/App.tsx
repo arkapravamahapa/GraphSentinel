@@ -47,7 +47,7 @@ export function App() {
     <>
       <Spotlight size={300} />
       <main className="viewport">
-        {/* Stable Fixed Navigation Bar */}
+        {/* Global Navigation Bar across both Home and Threat Radar screens */}
         <Navbar
           activeTab={activeTab}
           onSelectTab={(tab) => {
@@ -623,14 +623,14 @@ export function App() {
           <div
             style={{
               position: 'fixed',
-              top: '64px',
+              top: 0,
               left: 0,
               right: 0,
               bottom: 0,
-              width: '100%',
-              height: 'calc(100vh - 64px)',
+              width: '100vw',
+              height: '100vh',
               overflow: 'hidden',
-              zIndex: 10,
+              zIndex: 20,
             }}
           >
             <ThreatRadarDashboard
@@ -639,6 +639,7 @@ export function App() {
                 setActiveTab('home');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
+              onOpenWalletModal={() => setIsWalletModalOpen(true)}
             />
           </div>
         )}
