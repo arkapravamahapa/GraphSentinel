@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+torch
+torch-geometric
+transformers
+pyts
+numpy
+pandas
+scikit-learn
+crewai
+web3
+eth-account
+python-dotenv
