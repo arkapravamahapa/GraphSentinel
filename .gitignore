@@ -1,0 +1,24 @@
+# Node / Frontend
+node_modules/
+.next/
+out/
+
+# Python / Backend
+__pycache__/
+*.py[cod]
+venv/
+env/
+.venv/
+
+# Smart Contracts
+artifacts/
+cache/
+typechain-types/
+
+# Environment Variables (CRITICAL)
+.env
+.env.local
+
+# OS Files
+.DS_Store
+Thumbs.db
