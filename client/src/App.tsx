@@ -5,6 +5,8 @@ import { WalletModal } from './components/WalletModal';
 import { WatchDefenseModal } from './components/WatchDefenseModal';
 import { ContactModal } from './components/ContactModal';
 import { ThreatRadarDashboard } from './components/ThreatRadarDashboard';
+import { Spotlight } from './components/ui/spotlight';
+import { FlameButton } from './components/ui/flame-button';
 
 export function App() {
   const [activeTab, setActiveTab] = useState<'home' | 'radar'>('home');
@@ -43,6 +45,7 @@ export function App() {
 
   return (
     <>
+      <Spotlight size={300} />
       <main className="viewport">
         {/* Stable Fixed Navigation Bar */}
         <Navbar
@@ -80,12 +83,6 @@ export function App() {
               <div className="hero-vignette" />
 
               <div className="hero-content">
-                {/* Status telemetry pill */}
-                <div className="hero-pill-badge">
-                  <span className="live-indicator-dot" />
-                  <span>AUTONOMOUS ACTIVE DEFENSE • BASE SEPOLIA TESTNET</span>
-                </div>
-
                 <h1 className="hero-title">
                   <span className="line line-one">
                     <span className="line-reveal">Autonomous Defense</span>
@@ -103,41 +100,16 @@ export function App() {
 
                 {/* Hero Actions: Launch Radar & Watch Defense */}
                 <div className="hero-cta-group">
-                  <button
-                    type="button"
-                    className="primary-cta"
+                  <FlameButton
+                    text="Launch Radar"
                     onClick={handleLaunchRadar}
                     id="launch-radar-btn"
-                    aria-label="Launch Radar"
-                  >
-                    <span className="label">Launch Radar</span>
-                    <span className="arrow-box">
-                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path
-                          d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5"
-                          stroke="#FFFFFF"
-                          strokeWidth="1.6"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="secondary-glass-cta"
+                  />
+                  <FlameButton
+                    text="Watch Defense Demo"
                     onClick={() => setIsWatchDefenseOpen(true)}
                     id="watch-defense-btn"
-                    aria-label="Watch Defense Simulation"
-                  >
-                    <span className="play-icon-box">
-                      <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1.5 1.5L10.5 6.5L1.5 11.5V1.5Z" fill="#22d3ee" stroke="#22d3ee" strokeWidth="1.2" />
-                      </svg>
-                    </span>
-                    <span>Watch Defense Demo</span>
-                  </button>
+                  />
                 </div>
 
                 {/* Micro Metric Banner in Hero */}
@@ -495,26 +467,14 @@ export function App() {
                   </div>
 
                   <div className="preview-cta-row">
-                    <button
-                      type="button"
-                      className="primary-cta"
+                    <FlameButton
+                      text="Launch Full Radar"
                       onClick={handleLaunchRadar}
-                    >
-                      <span className="label">Launch Full Radar</span>
-                      <span className="arrow-box">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="secondary-glass-cta"
+                    />
+                    <FlameButton
+                      text="Watch Defense Demo"
                       onClick={() => setIsWatchDefenseOpen(true)}
-                    >
-                      <span>Watch Defense Demo</span>
-                    </button>
+                    />
                   </div>
                 </div>
 
@@ -596,26 +556,14 @@ export function App() {
                   </p>
 
                   <div className="cta-buttons">
-                    <button
-                      type="button"
-                      className="primary-cta"
+                    <FlameButton
+                      text="Launch Threat Radar"
                       onClick={handleLaunchRadar}
-                    >
-                      <span className="label">Launch Threat Radar</span>
-                      <span className="arrow-box">
-                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M2.5 7H11.5M11.5 7L7 2.5M11.5 7L7 11.5" stroke="#FFFFFF" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </span>
-                    </button>
-
-                    <button
-                      type="button"
-                      className="secondary-glass-cta"
+                    />
+                    <FlameButton
+                      text="Request Protocol Audit & Integration"
                       onClick={() => setIsContactOpen(true)}
-                    >
-                      <span>Request Protocol Audit &amp; Integration</span>
-                    </button>
+                    />
                   </div>
                 </div>
               </div>
@@ -641,10 +589,6 @@ export function App() {
                     Autonomous active defense infrastructure for DeFi liquidity pools. Powered by GNN topological intelligence,
                     temporal CNN computer vision, and on-chain agentic execution.
                   </p>
-                  <div className="footer-network-pill">
-                    <span className="live-indicator-dot" />
-                    <span>Base Sepolia Testnet • 100% Operational</span>
-                  </div>
                 </div>
 
                 <div className="footer-links-col">
