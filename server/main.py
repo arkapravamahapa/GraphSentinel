@@ -1,4 +1,5 @@
 import asyncio
+import httpx
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
@@ -27,6 +28,23 @@ def read_root():
 
 # Global variable to control the stage demo attack simulation
 attack_mode = False
+
+# n8n Webhook URL configuration using your specific path
+N8N_WEBHOOK_URL = "https://arkapravamahapa.app.n8n.cloud/webhook/1518f5b4-e0f1-4879-8e36-22ab63a4a057"
+
+async def trigger_n8n_alert(threat_data: dict):
+    """Asynchronously pushes threat flag telemetry to the n8n workflow."""
+    try:
+        async with httpx.AsyncClient() as client:
+            payload = {
+                "status": "CRITICAL_ATTACK_DETECTED",
+                "threat_score": threat_data.get("threat_score"),
+                "transactions": threat_data.get("transactions")
+            }
+            response = await client.post(N8N_WEBHOOK_URL, json=payload, timeout=5.0)
+            print(f"[n8n Sync] Alert dispatched successfully: {response.status_code}")
+    except Exception as e:
+        print(f"[n8n Sync] Failed to trigger n8n webhook: {e}")
 
 
 @app.post("/api/simulate-attack")
@@ -89,6 +107,13 @@ async def websocket_endpoint(websocket: WebSocket):
 
             if live_threat_score > 0.90:
                 status_msg = "Attack Detected!"
+                
+                # Automatically fire the webhook to her n8n workflow
+                asyncio.create_task(trigger_n8n_alert({
+                    "threat_score": live_threat_score,
+                    "transactions": batch
+                }))
+                
                 attack_mode = False
             else:
                 status_msg = "Safe"
