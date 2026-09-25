@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react';
 interface NavbarProps {
   activeTab: 'home' | 'radar';
   onSelectTab: (tab: 'home' | 'radar') => void;
-  onOpenDocs: () => void;
   onOpenContact: () => void;
   onOpenWalletModal: () => void;
   userAddress: string;
@@ -13,7 +12,6 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onSelectTab,
-  onOpenDocs,
   onOpenContact,
   onOpenWalletModal,
   userAddress,
@@ -99,6 +97,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             <path d="M12.5 15.5L8.5 21.5L12.5 23.5L16.5 21.5Z" fill="#050606" />
           </g>
         </svg>
+        <div className="brand-text-container">
+          <span className="brand-name">GraphSentinel</span>
+          <span className="brand-badge">DEFI DEFENSE</span>
+        </div>
       </a>
 
       {/* Header Actions Container */}
@@ -124,16 +126,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Threat Radar
           </button>
-          <button
-            type="button"
-            className="nav-link nav-link-3"
-            onClick={() => {
-              onOpenDocs();
-              setIsMenuOpen(false);
-            }}
-          >
-            Docs
-          </button>
+
           <button
             type="button"
             className="nav-link nav-link-4"

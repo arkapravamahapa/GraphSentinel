@@ -35,10 +35,9 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
   overflow-x: hidden;
-  background: #000000;
+  background: #040709;
   color-scheme: dark;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -47,10 +46,9 @@ html, body {
 
 #root {
   width: 100%;
-  height: 100%;
-  overflow: hidden;
+  min-height: 100%;
   position: relative;
-  background: #000000;
+  background: #040709;
 }
 
 /* Base Accessibility & Focus */
