@@ -1,8 +1,24 @@
 
+
+cd server
+.\venv\Scripts\Activate.ps1
+uvicorn main:app --reload --reload-exclude "venv*"
+
+
+cd client
+npm run dev
 ```
 GraphSentinel
 ├─ Architecture_ GraphSentinel.md
 ├─ client
+│  ├─ dist
+│  │  ├─ assets
+│  │  │  ├─ index-D4T6M4y2.css
+│  │  │  ├─ index-q6KRofJv.js
+│  │  │  └─ threat-radar-thumbnail-CANq3fHy.svg
+│  │  ├─ favicon.svg
+│  │  ├─ icons.svg
+│  │  └─ index.html
 │  ├─ eslint.config.js
 │  ├─ index.html
 │  ├─ package-lock.json
@@ -66,7 +82,6 @@ GraphSentinel
 ├─ server
 │  ├─ agent
 │  │  ├─ abi.json
-│  │  ├─ agent_runner.py
 │  │  ├─ orchestrator.py
 │  │  ├─ test_direct.py
 │  │  ├─ tools.py
@@ -92,11 +107,3 @@ GraphSentinel
 └─ task.md
 
 ```
-
-cd server
-.\venv\Scripts\Activate.ps1
-uvicorn main:app --reload --reload-exclude "venv*"
-
-
-cd client
-npm run dev
