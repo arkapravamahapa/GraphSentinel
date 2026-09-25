@@ -27,7 +27,12 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [selectedNode, setSelectedNode] = useState<NodeData | null>(null);
-  const [attackActive, setAttackActive] = useState<boolean>(true);
+  
+  // Live State from Backend
+  const [attackActive, setAttackActive] = useState<boolean>(false);
+  const [gafImage, setGafImage] = useState<string>('');
+  const [currentThreat, setCurrentThreat] = useState<number>(0.15);
+  
   const terminalEndRef = useRef<HTMLDivElement>(null);
 
   // Metric stats
@@ -35,21 +40,10 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
     tvlProtected: 42850000,
     attacksBlocked: 1429,
     bountiesPaid: 14.29,
-    currentThreat: 0.946,
   });
 
-  // Streaming terminal logs
   const [logs, setLogs] = useState<LogEntry[]>([
-    { id: '1', timestamp: '13:13:01.014', type: 'system', message: 'WebSocket initialized. Connected to Base Sepolia RPC wss://base-sepolia.g.alchemy.com/v2/...' },
-    { id: '2', timestamp: '13:13:02.120', type: 'gnn', message: 'PyTorch Geometric GNN: Monitoring 48 wallet topology edges in Uniswap V3 ETH/USDC' },
-    { id: '3', timestamp: '13:13:03.450', type: 'cnn', message: 'ResNet-18 CNN: GAF temporal matrix computed. Baseline normal market jitter.' },
-    { id: '4', timestamp: '13:13:05.890', type: 'fusion', message: 'MLP Fusion: Threat_Score 0.124 (Pool Safe • Autonomous Guard Armed)' },
-    { id: '5', timestamp: '13:13:08.200', type: 'gnn', message: 'ALERT: Rapid cyclic transfer pattern identified across 4 Sybil nodes [0x7A..C4]' },
-    { id: '6', timestamp: '13:13:08.310', type: 'cnn', message: 'CNN GAF Anomaly: Chaotic diagonal pattern detected. Temporal anomaly score: 91.8%' },
-    { id: '7', timestamp: '13:13:08.430', type: 'fusion', message: 'FUSED THREAT SCORE: 0.946 (> 0.90 THRESHOLD). Triggering Autonomous Interceptor...' },
-    { id: '8', timestamp: '13:13:08.520', type: 'agent', message: 'CrewAI Sentinel Agent: Evaluating counter-trade parameters. Calculating optimal stabilizing swap.' },
-    { id: '9', timestamp: '13:13:08.680', type: 'defense', message: 'Executing DefensePool.sol::executeDefense(0x8f2a...c301) on Base Sepolia. Nonce: pending' },
-    { id: '10', timestamp: '13:13:08.910', type: 'bounty', message: 'CONFIRMED: Defensive swap executed in 390ms. 0.01 ETH Micro-Bounty credited to Agent Vault.' },
+    { id: '1', timestamp: new Date().toTimeString().split(' ')[0], type: 'system', message: 'Connecting to GraphSentinel Backend...' },
   ]);
 
   // Network graph nodes
@@ -66,7 +60,7 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
     { id: 'node-7', x: 340, y: 210, type: 'suspicious', address: '0x77c2...51aa', balance: '19.9 ETH', threatScore: 0.72 },
     { id: 'node-8', x: 310, y: 290, type: 'suspicious', address: '0x22a0...93f4', balance: '34.0 ETH', threatScore: 0.65 },
 
-    // Attack Ring (Rose Red Wash-Trading Loop)
+    // Attack Ring (Rose Red Wash-Trading Loop) - Reacts to Live Backend Data
     { id: 'node-9', x: 320, y: 90, type: attackActive ? 'attack' : 'normal', address: '0x91F4...e21B', balance: '82.4 ETH', threatScore: attackActive ? 0.96 : 0.05 },
     { id: 'node-10', x: 390, y: 70, type: attackActive ? 'attack' : 'normal', address: '0x4B21...8a90', balance: '81.9 ETH', threatScore: attackActive ? 0.94 : 0.04 },
     { id: 'node-11', x: 420, y: 140, type: attackActive ? 'attack' : 'normal', address: '0x8C19...b3f2', balance: '83.1 ETH', threatScore: attackActive ? 0.95 : 0.05 },
@@ -78,53 +72,74 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
     terminalEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [logs]);
 
-  const handleSimulateAttack = () => {
+  // LIVE WEBSOCKET CONNECTION TO FASTAPI BACKEND
+  useEffect(() => {
+    const ws = new WebSocket('ws://127.0.0.1:8000/ws/threat-radar');
+
+    ws.onopen = () => {
+      const now = new Date().toTimeString().split(' ')[0];
+      setLogs((prev) => [...prev, { id: String(Date.now()), timestamp: now, type: 'system', message: 'WebSocket Connected: Streaming live threat data...' }]);
+    };
+
+    ws.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      const now = new Date().toTimeString().split(' ')[0] + '.' + new Date().getMilliseconds();
+      
+      setCurrentThreat(data.threat_score);
+      
+      if (data.gaf_image_base64) {
+        setGafImage(data.gaf_image_base64);
+      }
+
+      const isAttack = data.threat_score > 0.90;
+      setAttackActive(isAttack);
+
+      if (isAttack) {
+        setLogs((prev) => [...prev.slice(-49), 
+          { id: String(Date.now() + 1), timestamp: now, type: 'fusion', message: `ALERT: Attack Detected! Fused Threat Score: ${data.threat_score.toFixed(3)}` },
+          { id: String(Date.now() + 2), timestamp: now, type: 'agent', message: 'CrewAI Agent: Executing DefensePool.sol interceptor transaction.' }
+        ]);
+        
+        // Update stats to simulate agent success
+        setStats((prev) => ({
+          ...prev,
+          attacksBlocked: prev.attacksBlocked + 1,
+          bountiesPaid: Number((prev.bountiesPaid + 0.01).toFixed(2)),
+          tvlProtected: prev.tvlProtected + 1800000,
+        }));
+      } else {
+        setLogs((prev) => [...prev.slice(-49), { id: String(Date.now()), timestamp: now, type: 'system', message: `Batch Processed: ${data.transactions?.length || 0} Txs. Status: ${data.status}` }]);
+      }
+    };
+
+    ws.onerror = () => {
+      setLogs((prev) => [...prev, { id: String(Date.now()), timestamp: new Date().toTimeString().split(' ')[0], type: 'system', message: 'WebSocket Error: Ensure FastAPI is running on port 8000.' }]);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
+  // TRIGGER REAL API ENDPOINT
+  const handleSimulateAttack = async () => {
     setIsSimulating(true);
-    setAttackActive(true);
-    setToastMessage('⚠️ High-Frequency Wash Attack Injected into Uniswap V3 Pool');
+    setToastMessage('⚠️ Triggering Backend Attack Simulation...');
 
-    const now = new Date().toTimeString().split(' ')[0] + '.' + Math.floor(Math.random() * 900 + 100);
-
-    setTimeout(() => {
-      setLogs((prev) => [
-        ...prev,
-        { id: String(Date.now()), timestamp: now, type: 'gnn', message: `SIMULATED ATTACK: 4-wallet circular wash cycle detected with $1.8M volume spike.` },
-      ]);
-    }, 400);
-
-    setTimeout(() => {
-      setLogs((prev) => [
-        ...prev,
-        { id: String(Date.now() + 1), timestamp: now, type: 'cnn', message: `CNN GAF Confidence: 95.4% algorithmic manipulation pattern match.` },
-      ]);
-    }, 900);
+    try {
+      await fetch('http://127.0.0.1:8000/api/simulate-attack', {
+        method: 'POST',
+      });
+      setToastMessage('⚠️ Attack Injected! Watch the AI radar respond.');
+    } catch (error) {
+      console.error("Failed to trigger attack", error);
+      setToastMessage('❌ Backend unavailable. Is Uvicorn running?');
+    }
 
     setTimeout(() => {
-      setLogs((prev) => [
-        ...prev,
-        { id: String(Date.now() + 2), timestamp: now, type: 'fusion', message: `Multimodal Fused Threat Score: 0.958 (> 0.90). Waking Interceptor Agent!` },
-      ]);
-    }, 1400);
-
-    setTimeout(() => {
-      setLogs((prev) => [
-        ...prev,
-        { id: String(Date.now() + 3), timestamp: now, type: 'agent', message: `Agentic Interceptor: Executed counter-trade of 38.5 ETH. DefensePool.sol signature verified.` },
-        { id: String(Date.now() + 4), timestamp: now, type: 'bounty', message: `ATTACK NEUTRALIZED: Defense TX: 0x${Math.random().toString(16).substring(2, 10)}... Base Sepolia. 0.01 ETH bounty transferred.` },
-      ]);
-      setStats((prev) => ({
-        ...prev,
-        attacksBlocked: prev.attacksBlocked + 1,
-        bountiesPaid: Number((prev.bountiesPaid + 0.01).toFixed(2)),
-        tvlProtected: prev.tvlProtected + 1800000,
-      }));
-      setToastMessage('🛡️ Autonomous Defense Executed: $1.8M Liquidity Protected! (0.01 ETH Bounty Paid)');
       setIsSimulating(false);
-    }, 2200);
-
-    setTimeout(() => {
       setToastMessage(null);
-    }, 6000);
+    }, 4000);
   };
 
   return (
@@ -270,7 +285,7 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
           <div style={{ fontSize: '12px' }}>
             <span style={{ color: '#94a3b8' }}>Fused Threat: </span>
             <span style={{ color: attackActive ? '#f43f5e' : '#34d399', fontWeight: 700, fontFamily: 'monospace' }}>
-              {(stats.currentThreat * 100).toFixed(1)}%
+              {(currentThreat * 100).toFixed(1)}%
             </span>
           </div>
         </div>
@@ -416,7 +431,7 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
               Base Sepolia Oracle Feed
             </div>
             <div style={{ fontSize: '11px', color: '#94a3b8', lineHeight: 1.4 }}>
-              Zero-latency event stream connected via Alchemy RPC node.
+              Zero-latency event stream connected via local FastAPI instance.
             </div>
           </div>
         </aside>
@@ -744,49 +759,41 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({ user
                     Gramian Angular Field (GAF) Viewer
                   </h3>
                 </div>
-                <span style={{ fontSize: '11px', color: '#f43f5e', background: 'rgba(244, 63, 94, 0.1)', padding: '2px 8px', borderRadius: '4px', border: '1px solid rgba(244, 63, 94, 0.3)', fontFamily: 'monospace' }}>
-                  CNN CONFIDENCE: 94.2%
+                <span style={{ fontSize: '11px', color: attackActive ? '#f43f5e' : '#34d399', background: attackActive ? 'rgba(244, 63, 94, 0.1)' : 'rgba(52, 211, 153, 0.1)', padding: '2px 8px', borderRadius: '4px', border: `1px solid ${attackActive ? 'rgba(244, 63, 94, 0.3)' : 'rgba(52, 211, 153, 0.3)'}`, fontFamily: 'monospace' }}>
+                  LIVE ML INFERENCE
                 </span>
               </div>
 
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
-                {/* 6x6 GAF Matrix Visual */}
-                <div
-                  style={{
-                    width: '140px',
-                    height: '140px',
-                    borderRadius: '8px',
-                    border: '1px solid #334155',
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(6, 1fr)',
-                    gridTemplateRows: 'repeat(6, 1fr)',
-                    gap: '2px',
-                    padding: '4px',
-                    background: '#020617',
-                    flexShrink: 0,
-                  }}
-                >
-                  {[
-                    '#0369a1', '#0284c7', '#0ea5e9', '#38bdf8', '#fbbf24', '#f43f5e',
-                    '#0284c7', '#0369a1', '#38bdf8', '#f59e0b', '#f43f5e', '#be123c',
-                    '#0ea5e9', '#38bdf8', '#0284c7', '#f43f5e', '#be123c', '#e11d48',
-                    '#38bdf8', '#f59e0b', '#f43f5e', '#e11d48', '#be123c', '#f43f5e',
-                    '#fbbf24', '#f43f5e', '#be123c', '#be123c', '#f43f5e', '#fbbf24',
-                    '#f43f5e', '#be123c', '#e11d48', '#f43f5e', '#fbbf24', '#38bdf8',
-                  ].map((cellColor, idx) => (
-                    <div key={idx} style={{ background: cellColor, borderRadius: '2px' }} />
-                  ))}
-                </div>
+                {/* Live Base64 Image rendered from python pyts library */}
+                {gafImage ? (
+                    <img 
+                      src={`data:image/png;base64,${gafImage}`} 
+                      alt="GAF Heatmap" 
+                      style={{
+                        width: '140px',
+                        height: '140px',
+                        borderRadius: '8px',
+                        border: '1px solid #334155',
+                        flexShrink: 0,
+                        imageRendering: 'pixelated'
+                      }} 
+                    />
+                ) : (
+                    <div style={{ width: '140px', height: '140px', background: '#020617', border: '1px solid #334155', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#94a3b8', fontSize: '10px', flexShrink: 0 }}>
+                        Awaiting pyts Data...
+                    </div>
+                )}
 
                 <div style={{ fontSize: '12px', color: '#94a3b8', lineHeight: 1.5 }}>
                   <p style={{ margin: '0 0 6px 0', color: '#f8fafc', fontWeight: 600 }}>
                     Temporal Visual Representation of Swap Bursts
                   </p>
                   <p style={{ margin: '0 0 8px 0' }}>
-                    Converts 1-second price impact time-series into a 2D polar matrix. The chaotic red diagonal band indicates synchronized wash volume across Sybil clusters.
+                    Converts 1-second price impact time-series into a 2D polar matrix via the <code>pyts</code> library. The chaotic red diagonal band indicates synchronized wash volume across Sybil clusters.
                   </p>
                   <div style={{ fontFamily: 'monospace', fontSize: '11px', color: '#22d3ee' }}>
-                    ResNet-18 Heatmap Anomaly Score: 0.942
+                    ResNet-18 Heatmap Anomaly Score: {currentThreat.toFixed(3)}
                   </div>
                 </div>
               </div>
