@@ -1,6 +1,9 @@
 import os
 import pickle
+<<<<<<< HEAD
 import torch
+=======
+>>>>>>> origin/main
 import numpy as np
 
 MODEL_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'models', 'gnn_model.pkl')
@@ -11,11 +14,15 @@ def load_gnn_model():
     global gnn_model
     if os.path.exists(MODEL_PATH):
         try:
+<<<<<<< HEAD
             # First try standard pickle
+=======
+>>>>>>> origin/main
             with open(MODEL_PATH, 'rb') as f:
                 gnn_model = pickle.load(f)
             print(f"[GNN Engine] Successfully loaded model from {MODEL_PATH}")
         except Exception as e:
+<<<<<<< HEAD
             # Fallback for CUDA-trained models being loaded on a CPU with weights_only=False
             try:
                 gnn_model = torch.load(MODEL_PATH, map_location=torch.device('cpu'), weights_only=False)
@@ -23,6 +30,10 @@ def load_gnn_model():
             except Exception as e2:
                 print(f"[GNN Engine] Error loading model from {MODEL_PATH}: {e2}")
                 gnn_model = None
+=======
+            print(f"[GNN Engine] Error loading model from {MODEL_PATH}: {e}")
+            gnn_model = None
+>>>>>>> origin/main
     else:
         print(f"[GNN Engine] Model file not found at {MODEL_PATH}")
 

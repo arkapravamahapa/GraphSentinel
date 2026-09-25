@@ -4,6 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from generate_synthetic_data import get_transaction_batch
 from ml.fusion import calculate_threat_score
 
+<<<<<<< HEAD
 # Import your direct Web3 defense execution tool
 from agent.web3_tools import ExecuteDefenseTool
 from web3 import Web3
@@ -11,6 +12,11 @@ from web3 import Web3
 app = FastAPI(title="GraphSentinel API")
 
 # Allow the frontend to communicate with this backend
+=======
+app = FastAPI(title="GraphSentinel API")
+
+# Allow the Next.js frontend to communicate with this backend
+>>>>>>> origin/main
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -33,6 +39,7 @@ async def simulate_attack():
     attack_mode = True
     return {"message": "Wash-trading attack simulation triggered!"}
 
+<<<<<<< HEAD
 @app.post("/api/execute-defense")
 async def execute_on_chain_defense(target_token: str = "0xEBFBA4aaF595a1aB3F22Bd411954bcDdf7CAeDe6", amount: int = 500):
     """Triggers the smart contract defense execution tool on-chain directly."""
@@ -57,6 +64,8 @@ async def execute_on_chain_defense(target_token: str = "0xEBFBA4aaF595a1aB3F22Bd
             "message": str(e)
         }
 
+=======
+>>>>>>> origin/main
 # WebSocket Manager to handle frontend connections
 class ConnectionManager:
     def __init__(self):
