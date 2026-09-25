@@ -2,6 +2,10 @@ import os
 import io
 import pickle
 import base64
+<<<<<<< HEAD
+import torch
+=======
+>>>>>>> origin/main
 import numpy as np
 from pyts.image import GramianAngularField
 
@@ -18,12 +22,26 @@ def load_cnn_model():
     global cnn_model
     if os.path.exists(MODEL_PATH):
         try:
+<<<<<<< HEAD
+            # First try standard pickle
+=======
+>>>>>>> origin/main
             with open(MODEL_PATH, 'rb') as f:
                 cnn_model = pickle.load(f)
             print(f"[CNN Engine] Successfully loaded model from {MODEL_PATH}")
         except Exception as e:
+<<<<<<< HEAD
+            # Fallback for CUDA-trained models being loaded on a CPU with weights_only=False
+            try:
+                cnn_model = torch.load(MODEL_PATH, map_location=torch.device('cpu'), weights_only=False)
+                print(f"[CNN Engine] Successfully loaded CUDA model to CPU from {MODEL_PATH}")
+            except Exception as e2:
+                print(f"[CNN Engine] Error loading model from {MODEL_PATH}: {e2}")
+                cnn_model = None
+=======
             print(f"[CNN Engine] Error loading model from {MODEL_PATH}: {e}")
             cnn_model = None
+>>>>>>> origin/main
     else:
         print(f"[CNN Engine] Model file not found at {MODEL_PATH}")
 
@@ -122,7 +140,10 @@ def analyze_temporal_patterns(transactions: list[dict]) -> tuple[float, str]:
             pass
 
     # 2. Dynamic GAF temporal matrix analysis (fallback when input tensor requirements differ)
+<<<<<<< HEAD
+=======
     # Temporal anomalies manifest as severe correlation values along off-diagonal elements
+>>>>>>> origin/main
     diag_energy = float(np.mean(np.abs(np.diag(gaf_matrix))))
     off_diag_energy = float(np.mean(np.abs(gaf_matrix)))
     matrix_dispersion = abs(diag_energy - off_diag_energy)

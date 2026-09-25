@@ -89,6 +89,10 @@ export const DocsModal: React.FC<DocsModalProps> = ({ isOpen, onClose }) => {
           ].map((tab) => (
             <button
               key={tab.id}
+<<<<<<< HEAD
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+=======
+>>>>>>> origin/main
               onClick={() => setActiveTab(tab.id as any)}
               style={{
                 background: activeTab === tab.id ? 'rgba(34, 211, 238, 0.15)' : 'transparent',

@@ -1,3 +1,29 @@
+<<<<<<< HEAD
+# FastAPI & Web Server
+fastapi>=0.110.0
+uvicorn>=0.28.0
+websockets>=12.0
+pydantic>=2.6.0
+
+# Core Machine Learning & PyTorch Stack
+torch>=2.2.0
+torch-geometric>=2.5.0
+transformers>=4.38.0
+pyts>=0.13.0
+scikit-learn>=1.4.0
+
+# Data Processing & Visualization
+numpy>=1.26.0
+pandas>=2.2.0
+matplotlib>=3.8.0
+
+# AI Agent & Web3 Integration
+crewai>=0.30.0
+web3>=6.15.0
+eth-account>=0.11.0
+python-dotenv>=1.0.1
+requests>=2.31.0
+=======
 fastapi
 uvicorn
 pydantic
@@ -12,3 +38,4 @@ crewai
 web3
 eth-account
 python-dotenv
+>>>>>>> origin/main

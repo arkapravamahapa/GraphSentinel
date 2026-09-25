@@ -8,6 +8,13 @@ interface WalletModalProps {
 
 type ConnectStatus = 'idle' | 'connecting' | 'success' | 'error';
 
+<<<<<<< HEAD
+type EthereumProvider = {
+  request: (args: { method: string }) => Promise<unknown>;
+};
+
+=======
+>>>>>>> origin/main
 export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose, onConnectSuccess }) => {
   const [status, setStatus] = useState<ConnectStatus>('idle');
   const [selectedWallet, setSelectedWallet] = useState<string>('');
@@ -39,11 +46,19 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose, onCon
     }
 
     if (walletType === 'metamask' || walletType === 'coinbase') {
+<<<<<<< HEAD
+      const eth = (window as Window & { ethereum?: EthereumProvider }).ethereum;
+      if (eth) {
+        try {
+          const accounts = await eth.request({ method: 'eth_requestAccounts' });
+          if (Array.isArray(accounts) && accounts.length > 0 && typeof accounts[0] === 'string') {
+=======
       const eth = (window as any).ethereum;
       if (eth) {
         try {
           const accounts = await eth.request({ method: 'eth_requestAccounts' });
           if (accounts && accounts.length > 0) {
+>>>>>>> origin/main
             const addr = accounts[0];
             setWalletAddress(addr);
             setStatus('success');
@@ -55,9 +70,21 @@ export const WalletModal: React.FC<WalletModalProps> = ({ isOpen, onClose, onCon
             }, 1000);
             return;
           }
+<<<<<<< HEAD
+        } catch (err: unknown) {
+          setStatus('error');
+          const message =
+            err instanceof Error
+              ? err.message
+              : typeof err === 'object' && err !== null && 'message' in err && typeof err.message === 'string'
+              ? err.message
+              : 'Wallet connection was cancelled by user.';
+          setErrorMessage(message);
+=======
         } catch (err: any) {
           setStatus('error');
           setErrorMessage(err?.message || 'Wallet connection was cancelled by user.');
+>>>>>>> origin/main
           return;
         }
       } else {
