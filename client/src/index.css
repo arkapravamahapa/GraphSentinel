@@ -1,0 +1,226 @@
+@charset "UTF-8";
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&family=Space+Grotesk:wght@300..700&family=JetBrains+Mono:ital,wght@0,300..700;1,300..700&display=swap');
+
+/* Font Declarations: Alias high-end variable typefaces strictly to Reference Sans & Reference Display */
+@font-face {
+  font-family: 'Reference Sans';
+  src: local('Reference Sans'), local('MS Reference Sans Serif'), local('Plus Jakarta Sans'),
+       url('https://fonts.gstatic.com/s/plusjakartasans/v8/LDIbaomQNQcsDxUx3061MQG1Vnr7_rnPtEw.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Reference Display';
+  src: local('Reference Display'), local('Space Grotesk'),
+       url('https://fonts.gstatic.com/s/spacegrotesk/v16/V8mQoQDjQSkFtoMM3T6r8E7mF71Q-g.woff2') format('woff2');
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  font-family: "Reference Sans", "Plus Jakarta Sans", Arial, sans-serif;
+  color-scheme: dark;
+  --bg-color: #000000;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --tw-gradient-from: rgba(255, 255, 255, 0.16);
+  --tw-gradient-via: rgba(34, 211, 238, 0.10);
+  --tw-gradient-to: rgba(168, 85, 247, 0.04);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to);
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;
+  background: #040709;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+#root {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  background: #040709;
+}
+
+/* Base Accessibility & Focus */
+button, a {
+  transition: filter 140ms ease, opacity 140ms ease;
+  font-family: inherit;
+}
+
+button:hover, a:hover {
+  filter: brightness(1.08);
+}
+
+:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 3px;
+}
+
+/* Entrance Animations */
+@keyframes entrance-brand {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 7px, 0) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes entrance-nav {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes entrance-action {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes entrance-line {
+  from {
+    transform: translate3d(0, 110%, 0) skewY(2deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) skewY(0deg);
+  }
+}
+
+@keyframes entrance-copy {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes entrance-card {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0) scale(0.968);
+    transform-origin: 82% 50%;
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+    transform-origin: 82% 50%;
+  }
+}
+
+/* Motion Pending State Orchestration */
+html.motion-pending .brand {
+  opacity: 0;
+  animation: entrance-brand 580ms cubic-bezier(.16, 1, .3, 1) 60ms forwards;
+}
+
+html.motion-pending .nav-link-1 {
+  opacity: 0;
+  animation: entrance-nav 480ms cubic-bezier(.16, 1, .3, 1) 130ms forwards;
+}
+
+html.motion-pending .nav-link-2 {
+  opacity: 0;
+  animation: entrance-nav 480ms cubic-bezier(.16, 1, .3, 1) 175ms forwards;
+}
+
+html.motion-pending .nav-link-3 {
+  opacity: 0;
+  animation: entrance-nav 480ms cubic-bezier(.16, 1, .3, 1) 220ms forwards;
+}
+
+html.motion-pending .nav-link-4 {
+  opacity: 0;
+  animation: entrance-nav 480ms cubic-bezier(.16, 1, .3, 1) 265ms forwards;
+}
+
+html.motion-pending .time-panel {
+  opacity: 0;
+  animation: entrance-nav 520ms cubic-bezier(.16, 1, .3, 1) 180ms forwards;
+}
+
+html.motion-pending .sign-up,
+html.motion-pending .wallet-account-btn {
+  opacity: 0;
+  animation: entrance-action 520ms cubic-bezier(.16, 1, .3, 1) 220ms forwards;
+}
+
+html.motion-pending .menu-toggle {
+  opacity: 0;
+  animation: entrance-action 520ms cubic-bezier(.16, 1, .3, 1) 140ms forwards;
+}
+
+html.motion-pending .hero-title .line-one .line-reveal {
+  transform: translate3d(0, 110%, 0) skewY(2deg);
+  animation: entrance-line 800ms cubic-bezier(.22, 1, .36, 1) 300ms forwards;
+}
+
+html.motion-pending .hero-title .line-two .line-reveal {
+  transform: translate3d(0, 110%, 0) skewY(2deg);
+  animation: entrance-line 850ms cubic-bezier(.22, 1, .36, 1) 440ms forwards;
+}
+
+html.motion-pending .hero-copy {
+  opacity: 0;
+  animation: entrance-copy 620ms cubic-bezier(.16, 1, .3, 1) 740ms forwards;
+}
+
+html.motion-pending .primary-cta {
+  opacity: 0;
+  animation: entrance-action 560ms cubic-bezier(.16, 1, .3, 1) 960ms forwards;
+}
+
+html.motion-pending .demo-card {
+  opacity: 0;
+  animation: entrance-card 920ms cubic-bezier(.22, 1, .36, 1) 1040ms forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.motion-pending .brand,
+  html.motion-pending .nav-link-1,
+  html.motion-pending .nav-link-2,
+  html.motion-pending .nav-link-3,
+  html.motion-pending .nav-link-4,
+  html.motion-pending .time-panel,
+  html.motion-pending .sign-up,
+  html.motion-pending .wallet-account-btn,
+  html.motion-pending .menu-toggle,
+  html.motion-pending .hero-title .line-reveal,
+  html.motion-pending .hero-copy,
+  html.motion-pending .primary-cta,
+  html.motion-pending .demo-card {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+}

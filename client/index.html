@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/src/assets/threat-radar-thumbnail.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>GraphSentinel | Autonomous DeFi Active Defense</title>
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="GraphSentinel executes defensive trades autonomously, so your protocol is protected before you even notice." />
+    <script>
+      // Immediate entrance choreography setup
+      if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('motion-pending');
+        window.__motionTimeout = setTimeout(() => {
+          document.documentElement.classList.remove('motion-pending');
+        }, 3500);
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

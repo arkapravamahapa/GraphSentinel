@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#0e3a47" stop-opacity="0.8" />
+      <stop offset="40%" stop-color="#08232c" stop-opacity="0.6" />
+      <stop offset="80%" stop-color="#030d12" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#02080a" stop-opacity="1" />
+    </radialGradient>
+    <radialGradient id="threatGlow" cx="68%" cy="38%" r="35%">
+      <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.45" />
+      <stop offset="60%" stop-color="#f43f5e" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#f43f5e" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="cyanGlow" cx="35%" cy="65%" r="40%">
+      <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.35" />
+      <stop offset="70%" stop-color="#06b6d4" stop-opacity="0.05" />
+      <stop offset="100%" stop-color="#06b6d4" stop-opacity="0" />
+    </radialGradient>
+    <filter id="neonBlur" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(34,211,238,0.06)" stroke-width="0.8" />
+    </pattern>
+  </defs>
+
+  <!-- Background Base -->
+  <rect width="400" height="400" fill="#040c10" />
+  <rect width="400" height="400" fill="url(#radarGlow)" />
+  <rect width="400" height="400" fill="url(#threatGlow)" />
+  <rect width="400" height="400" fill="url(#cyanGlow)" />
+  <rect width="400" height="400" fill="url(#grid)" />
+
+  <!-- Radar Concentric Rings -->
+  <circle cx="200" cy="200" r="170" fill="none" stroke="rgba(34,211,238,0.12)" stroke-width="1" stroke-dasharray="3 3" />
+  <circle cx="200" cy="200" r="125" fill="none" stroke="rgba(34,211,238,0.18)" stroke-width="1" />
+  <circle cx="200" cy="200" r="75" fill="none" stroke="rgba(34,211,238,0.22)" stroke-width="1" stroke-dasharray="2 2" />
+  <circle cx="200" cy="200" r="25" fill="none" stroke="rgba(34,211,238,0.35)" stroke-width="1.2" />
+
+  <!-- Radar Crosshairs -->
+  <line x1="200" y1="20" x2="200" y2="380" stroke="rgba(34,211,238,0.12)" stroke-width="0.8" />
+  <line x1="20" y1="200" x2="380" y2="200" stroke="rgba(34,211,238,0.12)" stroke-width="0.8" />
+
+  <!-- GNN Network Graph Edges -->
+  <!-- Normal Pool Activity (Cyan) -->
+  <g stroke="rgba(34,211,238,0.3)" stroke-width="1.2">
+    <line x1="90" y1="280" x2="150" y2="240" />
+    <line x1="150" y1="240" x2="190" y2="290" />
+    <line x1="190" y1="290" x2="130" y2="330" />
+    <line x1="130" y1="330" x2="90" y2="280" />
+    <line x1="150" y1="240" x2="200" y2="200" stroke="rgba(34,211,238,0.45)" stroke-width="1.5" />
+    <line x1="90" y1="280" x2="60" y2="220" />
+    <line x1="190" y1="290" x2="250" y2="270" stroke="rgba(245,158,11,0.35)" />
+  </g>
+
+  <!-- Suspicious Cluster (Amber) -->
+  <g stroke="rgba(245,158,11,0.5)" stroke-width="1.4">
+    <line x1="250" y1="270" x2="285" y2="225" />
+    <line x1="285" y1="225" x2="320" y2="280" />
+    <line x1="320" y1="280" x2="250" y2="270" />
+  </g>
+
+  <!-- Wash Trading Anomaly Loop (Neon Rose Red Attack) -->
+  <g stroke="#f43f5e" stroke-width="2" filter="url(#neonBlur)">
+    <line x1="260" y1="120" x2="315" y2="95" stroke-dasharray="4 2" />
+    <line x1="315" y1="95" x2="340" y2="150" stroke-dasharray="4 2" />
+    <line x1="340" y1="150" x2="290" y2="185" stroke-dasharray="4 2" />
+    <line x1="290" y1="185" x2="260" y2="120" stroke-dasharray="4 2" />
+    <line x1="260" y1="120" x2="340" y2="150" stroke="#f43f5e" stroke-width="1" />
+  </g>
+
+  <!-- Graph Nodes -->
+  <!-- Normal Nodes (Cyan) -->
+  <circle cx="90" cy="280" r="4.5" fill="#22d3ee" filter="url(#neonBlur)" />
+  <circle cx="150" cy="240" r="6" fill="#06b6d4" />
+  <circle cx="190" cy="290" r="5" fill="#22d3ee" />
+  <circle cx="130" cy="330" r="4" fill="#38bdf8" />
+  <circle cx="60" cy="220" r="3.5" fill="#0891b2" />
+  <circle cx="200" cy="200" r="7" fill="#67e8f9" filter="url(#neonBlur)" />
+
+  <!-- Amber Suspicious Nodes -->
+  <circle cx="250" cy="270" r="5" fill="#fbbf24" filter="url(#neonBlur)" />
+  <circle cx="285" cy="225" r="5.5" fill="#f59e0b" />
+  <circle cx="320" cy="280" r="4.5" fill="#d97706" />
+
+  <!-- Attack Nodes (Rose Wash Ring) -->
+  <g filter="url(#neonBlur)">
+    <circle cx="260" cy="120" r="6.5" fill="#f43f5e" />
+    <circle cx="315" cy="95" r="7" fill="#e11d48" />
+    <circle cx="340" cy="150" r="6.5" fill="#f43f5e" />
+    <circle cx="290" cy="185" r="8" fill="#ff2453" />
+  </g>
+
+  <!-- Center Target Reticle -->
+  <circle cx="200" cy="200" r="2" fill="#ffffff" />
+
+  <!-- Top Right GAF Anomaly Heatmap Matrix Inset -->
+  <g transform="translate(20, 20) scale(0.65)" opacity="0.85">
+    <rect width="90" height="90" rx="8" fill="rgba(6,18,24,0.75)" stroke="rgba(34,211,238,0.3)" stroke-width="1" />
+    <!-- 4x4 GAF cells -->
+    <rect x="8" y="8" width="16" height="16" fill="#0369a1" />
+    <rect x="27" y="8" width="16" height="16" fill="#0284c7" />
+    <rect x="46" y="8" width="16" height="16" fill="#0ea5e9" />
+    <rect x="65" y="8" width="16" height="16" fill="#38bdf8" />
+
+    <rect x="8" y="27" width="16" height="16" fill="#0284c7" />
+    <rect x="27" y="27" width="16" height="16" fill="#f59e0b" />
+    <rect x="46" y="27" width="16" height="16" fill="#f43f5e" />
+    <rect x="65" y="27" width="16" height="16" fill="#e11d48" />
+
+    <rect x="8" y="46" width="16" height="16" fill="#0ea5e9" />
+    <rect x="27" y="46" width="16" height="16" fill="#f43f5e" />
+    <rect x="46" y="46" width="16" height="16" fill="#be123c" />
+    <rect x="65" y="46" width="16" height="16" fill="#fda4af" />
+
+    <rect x="8" y="65" width="16" height="16" fill="#38bdf8" />
+    <rect x="27" y="65" width="16" height="16" fill="#e11d48" />
+    <rect x="46" y="65" width="16" height="16" fill="#fda4af" />
+    <rect x="65" y="65" width="16" height="16" fill="#f43f5e" />
+  </g>
+
+  <!-- HUD Labels -->
+  <text x="375" y="35" fill="rgba(244,63,94,0.9)" font-family="monospace" font-size="11" font-weight="bold" text-anchor="end">THREAT: 94.6%</text>
+  <text x="375" y="52" fill="rgba(34,211,238,0.7)" font-family="monospace" font-size="9" text-anchor="end">WASH LOOP [0x7A..C4]</text>
+  <text x="25" y="375" fill="rgba(34,211,238,0.5)" font-family="monospace" font-size="9">GNN • CNN MULTIMODAL</text>
+  <text x="375" y="375" fill="rgba(16,185,129,0.8)" font-family="monospace" font-size="9" text-anchor="end">INTERCEPTOR ARMED</text>
+</svg>
