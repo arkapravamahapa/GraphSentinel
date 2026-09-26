@@ -148,11 +148,3 @@ GEMINI_API_KEY=your_google_gemini_api_key
 ```
 
 ---
-
-## 📜 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
-```
-
-```
