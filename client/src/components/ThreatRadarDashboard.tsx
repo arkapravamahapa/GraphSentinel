@@ -16,12 +16,17 @@ import {
   Cpu,
   TrendingUp,
   Sliders,
+  ShieldCheck,
+  ExternalLink,
 } from 'lucide-react';
+import { TrustScoreBadge } from './reputation/TrustScoreBadge';
+import { ReputationSentinelView } from './reputation/ReputationSentinelView';
 
 interface ThreatRadarDashboardProps {
   userAddress: string;
   onDisconnect: () => void;
   onOpenWalletModal?: () => void;
+  onNavigateToReputation?: () => void;
 }
 
 interface LogEntry {
@@ -79,8 +84,11 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({
   userAddress,
   onDisconnect,
   onOpenWalletModal,
+  onNavigateToReputation,
 }) => {
-  const [activeRail, setActiveRail] = useState<'radar' | 'analytics' | 'pools' | 'bounties' | 'settings'>('radar');
+  const [activeRail, setActiveRail] = useState<
+    'radar' | 'analytics' | 'pools' | 'bounties' | 'settings' | 'reputation'
+  >('radar');
   const [selectedPool, setSelectedPool] = useState<string>('Uniswap v3 ETH/USDC');
   const [isPoolDropdownOpen, setIsPoolDropdownOpen] = useState<boolean>(false);
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
@@ -426,7 +434,20 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({
               <Layers size={20} />
             </button>
 
-            {/* Bounties */}
+            {/* Reputation Sentinel */}
+            <button
+              onClick={() => setActiveRail('reputation')}
+              title="Reputation Sentinel (Base Sepolia)"
+              className={`w-11 h-11 rounded-xl flex items-center justify-center transition-all ${
+                activeRail === 'reputation'
+                  ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40 shadow-[0_0_12px_rgba(34,211,238,0.25)]'
+                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900 border border-transparent'
+              }`}
+            >
+              <ShieldCheck size={20} />
+            </button>
+
+            {/* Operator Bounties */}
             <button
               onClick={() => setActiveRail('bounties')}
               title="Operator Bounties"
@@ -848,6 +869,41 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({
                       <p className="text-emerald-400 font-semibold">DefensePool.sol</p>
                     </div>
                   </div>
+
+                  {/* Base Sepolia On-Chain Trust Rating Badge */}
+                  <div className="pt-2 border-t border-slate-800/60 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <ShieldCheck size={13} className="text-cyan-400" />
+                      <span className="text-[11px] text-slate-400 font-mono">Base Sepolia Trust:</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <TrustScoreBadge
+                        score={
+                          (selectedThreat?.score || (selectedNode?.threatScore ? selectedNode.threatScore * 100 : 96.1)) > 70
+                            ? 18
+                            : 96
+                        }
+                        size="sm"
+                        showLabel={false}
+                        showLink
+                      />
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (onNavigateToReputation) {
+                            onNavigateToReputation();
+                          } else {
+                            setActiveRail('reputation');
+                          }
+                        }}
+                        className="text-[11px] text-cyan-400 hover:text-cyan-300 font-mono flex items-center gap-0.5 hover:underline"
+                        title="Open full reputation profile"
+                      >
+                        <span>Profile</span>
+                        <ExternalLink size={9} />
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Multimodal Reasoning */}
@@ -1258,9 +1314,23 @@ export const ThreatRadarDashboard: React.FC<ThreatRadarDashboardProps> = ({
                 <div className="space-y-1 text-[11px] text-slate-400 pt-1">
                   <div>DefensePool: <span className="text-cyan-400">0x8F32...b109</span></div>
                   <div>BountyManager: <span className="text-amber-400">0x2A19...c442</span></div>
+                  <div>ReputationTrust: <span className="text-emerald-400">0x6316...000C</span></div>
                 </div>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* =====================================================================
+           SUBVIEW: REPUTATION SENTINEL (HYBRID BASE SEPOLIA PROTOCOL)
+           ===================================================================== */}
+        {activeRail === 'reputation' && (
+          <div className="flex-1 overflow-y-auto bg-[#040810] flex flex-col">
+            <ReputationSentinelView
+              userAddress={userAddress}
+              onOpenWalletModal={onOpenWalletModal}
+              onNavigateToRadar={() => setActiveRail('radar')}
+            />
           </div>
         )}
       </div>

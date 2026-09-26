@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { TrustScoreBadge } from './reputation/TrustScoreBadge';
 
 interface NavbarProps {
-  activeTab: 'home' | 'radar';
-  onSelectTab: (tab: 'home' | 'radar') => void;
+  activeTab: 'home' | 'radar' | 'reputation';
+  onSelectTab: (tab: 'home' | 'radar' | 'reputation') => void;
   onOpenContact: () => void;
   onOpenWalletModal: () => void;
   userAddress: string;
@@ -126,6 +127,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Threat Radar
           </button>
+          <button
+            type="button"
+            className={`nav-link nav-link-3 ${activeTab === 'reputation' ? 'active' : ''}`}
+            onClick={() => {
+              onSelectTab('reputation');
+              setIsMenuOpen(false);
+            }}
+          >
+            Reputation
+          </button>
 
           <button
             type="button"
@@ -222,7 +233,36 @@ export const Navbar: React.FC<NavbarProps> = ({
                   <span style={{ fontSize: '11px', color: '#34d399', fontWeight: 500 }}>Authorized Operator</span>
                 </div>
 
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <span style={{ fontSize: '11px', color: '#94a3b8' }}>Trust Score:</span>
+                  <TrustScoreBadge score={96} size="sm" showLabel={false} showLink={false} />
+                </div>
+
                 <div style={{ height: '1px', background: 'rgba(255, 255, 255, 0.08)' }} />
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsAccountOpen(false);
+                    onSelectTab('reputation');
+                  }}
+                  style={{
+                    background: 'rgba(34, 211, 238, 0.12)',
+                    border: '1px solid rgba(34, 211, 238, 0.35)',
+                    borderRadius: '6px',
+                    color: '#67e8f9',
+                    padding: '8px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '6px',
+                  }}
+                >
+                  ⭐ Open Reputation Sentinel
+                </button>
 
                 <button
                   type="button"

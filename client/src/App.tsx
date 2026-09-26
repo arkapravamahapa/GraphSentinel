@@ -5,11 +5,12 @@ import { WalletModal } from './components/WalletModal';
 import { WatchDefenseModal } from './components/WatchDefenseModal';
 import { ContactModal } from './components/ContactModal';
 import { ThreatRadarDashboard } from './components/ThreatRadarDashboard';
+import { ReputationSentinelView } from './components/reputation/ReputationSentinelView';
 import { Spotlight } from './components/ui/spotlight';
 import { FlameButton } from './components/ui/flame-button';
 
 export function App() {
-  const [activeTab, setActiveTab] = useState<'home' | 'radar'>('home');
+  const [activeTab, setActiveTab] = useState<'home' | 'radar' | 'reputation'>('home');
   const [userAddress, setUserAddress] = useState<string>(() => {
     return localStorage.getItem('graphsentinel_active_wallet') || '';
   });
@@ -60,7 +61,6 @@ export function App() {
           onDisconnectWallet={handleDisconnectWallet}
         />
 
-        {/* View Switcher: Home Landing vs. Threat Radar Dashboard */}
         {activeTab === 'home' ? (
           <div className="home-container">
             {/* Hero Screen with Edge-to-Edge Video */}
@@ -618,7 +618,7 @@ export function App() {
               </div>
             </footer>
           </div>
-        ) : (
+        ) : activeTab === 'radar' ? (
           /* Live Threat Radar Mission Control Dashboard */
           <div
             style={{
@@ -640,6 +640,30 @@ export function App() {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
               onOpenWalletModal={() => setIsWalletModalOpen(true)}
+              onNavigateToReputation={() => {
+                setActiveTab('reputation');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
+            />
+          </div>
+        ) : (
+          /* GraphSentinel Decentralized Reputation System View */
+          <div
+            style={{
+              paddingTop: '64px',
+              width: '100%',
+              minHeight: 'calc(100vh - 64px)',
+              background: '#040810',
+              zIndex: 10,
+            }}
+          >
+            <ReputationSentinelView
+              userAddress={userAddress}
+              onOpenWalletModal={() => setIsWalletModalOpen(true)}
+              onNavigateToRadar={() => {
+                setActiveTab('radar');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }}
             />
           </div>
         )}

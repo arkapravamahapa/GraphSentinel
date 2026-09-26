@@ -1,13 +1,17 @@
 import os
-import torch
 import numpy as np
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 # Define model path
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "saved_models", "gnn_model.pth")
 
 def load_gnn_model():
     """Load GNN model with PyTorch 2.6+ compatibility (weights_only=False)."""
-    if os.path.exists(MODEL_PATH):
+    if torch and os.path.exists(MODEL_PATH):
         try:
             gnn_model = torch.load(MODEL_PATH, map_location=torch.device('cpu'), weights_only=False)
             print(f"[GNN Engine] Successfully loaded model from {MODEL_PATH}")
@@ -16,7 +20,6 @@ def load_gnn_model():
             print(f"[GNN Engine] Error loading model from {MODEL_PATH}: {e}")
             return None
     else:
-        print(f"[GNN Engine] Model file not found at {MODEL_PATH}")
         return None
 
 gnn_model = load_gnn_model()

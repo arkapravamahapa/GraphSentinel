@@ -1,15 +1,19 @@
 import os
-import torch
 import numpy as np
 import base64
 import io
+
+try:
+    import torch
+except ImportError:
+    torch = None
 
 # Define model path
 MODEL_PATH = os.path.join(os.path.dirname(__file__), "saved_models", "cnn_model.pth")
 
 def load_cnn_model():
     """Load CNN model with PyTorch 2.6+ compatibility (weights_only=False)."""
-    if os.path.exists(MODEL_PATH):
+    if torch and os.path.exists(MODEL_PATH):
         try:
             cnn_model = torch.load(MODEL_PATH, map_location=torch.device('cpu'), weights_only=False)
             print(f"[CNN Engine] Successfully loaded model from {MODEL_PATH}")
@@ -18,7 +22,6 @@ def load_cnn_model():
             print(f"[CNN Engine] Error loading model from {MODEL_PATH}: {e}")
             return None
     else:
-        print(f"[CNN Engine] Model file not found at {MODEL_PATH}")
         return None
 
 cnn_model = load_cnn_model()
