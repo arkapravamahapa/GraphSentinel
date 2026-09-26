@@ -1,0 +1,107 @@
+{
+  "_format": "hh3-artifact-1",
+  "contractName": "Reputation",
+  "sourceName": "contracts/Reputation.sol",
+  "abi": [
+    {
+      "inputs": [],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "user",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "newScore",
+          "type": "uint256"
+        }
+      ],
+      "name": "ScoreUpdated",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "admin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        }
+      ],
+      "name": "getScore",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_user",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_score",
+          "type": "uint256"
+        }
+      ],
+      "name": "updateScore",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "name": "userScores",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561000f575f80fd5b50600180546001600160a01b031916331790556102208061002f5f395ff3fe608060405234801561000f575f80fd5b506004361061004a575f3560e01c80631413d4c01461004e57806365d9772414610080578063d47875d014610095578063f851a440146100bd575b5f80fd5b61006d61005c3660046101a2565b5f6020819052908152604090205481565b6040519081526020015b60405180910390f35b61009361008e3660046101c2565b6100e8565b005b61006d6100a33660046101a2565b6001600160a01b03165f9081526020819052604090205490565b6001546100d0906001600160a01b031681565b6040516001600160a01b039091168152602001610077565b6001546001600160a01b031633146101375760405162461bcd60e51b815260206004820152600e60248201526d139bdd08185d5d1a1bdc9a5e995960921b604482015260640160405180910390fd5b6001600160a01b0382165f818152602081815260409182902084905590518381527f66ead48cfe0e1d1aa8bad492e906c348dfcfeecbf3b7b2cdf9b1f3cfa42a2945910160405180910390a25050565b80356001600160a01b038116811461019d575f80fd5b919050565b5f602082840312156101b2575f80fd5b6101bb82610187565b9392505050565b5f80604083850312156101d3575f80fd5b6101dc83610187565b94602093909301359350505056fea2646970667358221220fa2bbd1be539c57200d624da7c9292eb2b32e4068d79be0059b14bae5210282e64736f6c63430008180033",
+  "deployedBytecode": "0x608060405234801561000f575f80fd5b506004361061004a575f3560e01c80631413d4c01461004e57806365d9772414610080578063d47875d014610095578063f851a440146100bd575b5f80fd5b61006d61005c3660046101a2565b5f6020819052908152604090205481565b6040519081526020015b60405180910390f35b61009361008e3660046101c2565b6100e8565b005b61006d6100a33660046101a2565b6001600160a01b03165f9081526020819052604090205490565b6001546100d0906001600160a01b031681565b6040516001600160a01b039091168152602001610077565b6001546001600160a01b031633146101375760405162461bcd60e51b815260206004820152600e60248201526d139bdd08185d5d1a1bdc9a5e995960921b604482015260640160405180910390fd5b6001600160a01b0382165f818152602081815260409182902084905590518381527f66ead48cfe0e1d1aa8bad492e906c348dfcfeecbf3b7b2cdf9b1f3cfa42a2945910160405180910390a25050565b80356001600160a01b038116811461019d575f80fd5b919050565b5f602082840312156101b2575f80fd5b6101bb82610187565b9392505050565b5f80604083850312156101d3575f80fd5b6101dc83610187565b94602093909301359350505056fea2646970667358221220fa2bbd1be539c57200d624da7c9292eb2b32e4068d79be0059b14bae5210282e64736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {},
+  "immutableReferences": {},
+  "inputSourceName": "project/contracts/Reputation.sol",
+  "buildInfoId": "solc-0_8_24-f62e19f2495c77ea38238428c909c07f07e38888"
+}

@@ -1,0 +1,49 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_24-f62e19f2495c77ea38238428c909c07f07e38888",
+  "solcVersion": "0.8.24",
+  "solcLongVersion": "0.8.24+commit.e11b9ed9",
+  "compilerType": "solc",
+  "toolVersions": {
+    "hardhat": "3.18.0"
+  },
+  "userSourceNameMap": {
+    "contracts/Reputation.sol": "project/contracts/Reputation.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode.linkReferences",
+            "evm.bytecode.object",
+            "evm.bytecode.opcodes",
+            "evm.bytecode.sourceMap",
+            "evm.deployedBytecode.immutableReferences",
+            "evm.deployedBytecode.linkReferences",
+            "evm.deployedBytecode.object",
+            "evm.deployedBytecode.opcodes",
+            "evm.deployedBytecode.sourceMap",
+            "evm.methodIdentifiers"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Reputation.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\ncontract Reputation {\n    mapping(address => uint256) public userScores;\n    address public admin;\n\n    event ScoreUpdated(address indexed user, uint256 newScore);\n\n    constructor() {\n        admin = msg.sender;\n    }\n\n    function updateScore(address _user, uint256 _score) external {\n        require(msg.sender == admin, \"Not authorized\");\n        userScores[_user] = _score;\n        emit ScoreUpdated(_user, _score);\n    }\n\n    function getScore(address _user) external view returns (uint256) {\n        return userScores[_user];\n    }\n}"
+      }
+    }
+  }
+}
